@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Task 13</title>
+	</head>
+	<body>
+		<div>
+			<input type="text" />
+			<button type="submit">Submit</button>
+			<p></p>
+		</div>
+	</body>
+	<script>
+		const div = document.querySelector("div");
+		const inputField = document.querySelector("input");
+		const btn = document.querySelector("button");
+		const textField = document.querySelector("p");
+
+		inputField.addEventListener("input", () => {
+			textField.innerText = inputField.value;
+		});
+
+		function replaceEmailnLinkWithText(text) {
+			const emailRe = /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b/g;
+			const linkRe =
+				/(?:^|[^"'])(https?:\/\/[\w-]+(\.[\w-]+)+\.?(:\d+)?(\/\S*)?)/gi;
+			return text
+				.replaceAll(emailRe, "[контакти заборонені]")
+				.replace(linkRe, "[посилання заборонено]");
+		}
+
+		function filterWords(word) {
+			return !(/^\d+$/.test(word) && word.length > 3);
+		}
+
+		function formatWord(word) {
+			return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+		}
+
+		function createNewText(text) {
+			let temp = text;
+			return replaceEmailnLinkWithText(temp)
+				.split(" ")
+				.filter((word) => filterWords(word))
+				.map((word) => formatWord(word))
+				.join(" ");
+		}
+
+		function alertMessage() {
+			setInterval(() => alert("Do you need some help?"), 5000);
+		}
+
+		const isValidInput = (input) => !input;
+
+		btn.addEventListener("click", () => {
+			if (isValidInput(inputField.value))
+				return alert("Input must be filled out");
+
+			const inputFieldLen = inputField.value.length;
+			const textVals = createNewText(inputField.value);
+
+			const para = document.createElement("p");
+			const node = document.createTextNode(textVals);
+			para.appendChild(node);
+			div.appendChild(para);
+
+			textVals.length > inputFieldLen && alertMessage();
+		});
+	</script>
+</html>

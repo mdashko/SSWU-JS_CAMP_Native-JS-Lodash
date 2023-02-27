@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+	</head>
+	<body>
+		<div>
+			<input type="text" />
+			<button>Submit</button>
+			<h1></h1>
+		</div>
+	</body>
+	<script>
+		const wrapper = document.querySelector("div");
+		const inputField = document.querySelector("input");
+		const btn = document.querySelector("button");
+		const resText = document.querySelector("h1");
+
+		const upperCaseREGEX = /(?=(?:.*?[A-Z]){2})/;
+		const numsPositionREGEX = /^(?:(?!\d\d).)*$/;
+
+		const checkLength = (password) =>
+			password.length > 6 && password.length < 20;
+
+		const checkUnderscore = (password) =>
+			(password.match(/_/g) || []).length === 1;
+
+		const checkUpperCase = (password) => upperCaseREGEX.test(password);
+
+		const checkDigits = (password) => (password.match(/\d/g) || []).length <= 5;
+
+		const checkDigitPos = (password) => numsPositionREGEX.test(password);
+
+		const isValidPassword = (password) =>
+			checkLength(password) &&
+			checkUnderscore(password) &&
+			checkUpperCase(password) &&
+			checkDigits(password) &&
+			checkDigitPos(password);
+
+		btn.addEventListener("click", () => {
+			const password = inputField.value;
+			resText.innerText = isValidPassword(password) ? "correct" : "incorrect";
+		});
+	</script>
+</html>
